@@ -5,7 +5,7 @@ public class playercontroller : MonoBehaviour
 { 
     InputAction move_action;
     Rigidbody2D rb_rotate;
-    float speed = 11f;
+    float speed = 1f;
     void Start()
     {
         move_action = InputSystem.actions.FindAction("Move");
