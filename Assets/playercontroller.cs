@@ -7,6 +7,10 @@ public class playercontroller : MonoBehaviour
     Rigidbody2D rb_rotate;
     SurfaceEffector2D surfaceEffector2D;
     Vector2 move_vector;
+   public bool playing = true;
+   float flipcount = 0f;
+   float totalRotation = 0f;
+   float previousRotation = 0f;
   [SerializeField]  float speed = 2f;
   [SerializeField]  float basespeed = 15f;
   [SerializeField]  float boostspeed = 25f;
@@ -20,14 +24,16 @@ public class playercontroller : MonoBehaviour
     }
 
     void Update()
-    {
-       move_vector = move_action.ReadValue<Vector2>();
+    {  if(playing){
+       
        rotate();
        boost();
+         calculateFlips();
+       }
     }
     void rotate()
     {
-       
+       move_vector = move_action.ReadValue<Vector2>();
        
     
         if (move_vector.x < 0)
@@ -51,5 +57,17 @@ public class playercontroller : MonoBehaviour
         {
            surfaceEffector2D.speed = basespeed;
         }
+    }
+    void calculateFlips()
+    {float currRotation = transform.rotation.eulerAngles.z;
+          previousRotation = currRotation;
+          totalRotation += Mathf.DeltaAngle(previousRotation, currRotation);
+         // print(totalRotation);
+          if (Mathf.Abs(totalRotation) >= 340f)
+          {
+              flipcount += 1f;
+              totalRotation = 0f;
+              print("flips: " + flipcount);
+          }
     }
 }
